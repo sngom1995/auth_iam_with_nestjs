@@ -1,17 +1,19 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
 } from '@nestjs/common';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { ActiveUser } from '../iam/authentication/decorators/active-user.decorator';
 import ActiveUserData from '../iam/interfaces/active-user-data.interface';
+import { Role } from '../users/enums/role.enum';
+import { Roles } from '../iam/authorization/decorators/roles.decorator';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -33,11 +35,13 @@ export class CoffeesController {
     return this.coffeesService.findOne(+id);
   }
 
+  @Roles(Role.Admin)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateCoffeeDto: UpdateCoffeeDto) {
     return this.coffeesService.update(+id, updateCoffeeDto);
   }
 
+  @Roles(Role.Admin)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.coffeesService.remove(+id);
