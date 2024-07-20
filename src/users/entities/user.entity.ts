@@ -23,6 +23,11 @@ export class User {
 
   @Column({ nullable: true })
   googleId: string;
+  @Column({ default: false })
+  isTfaEnabled: boolean; // 👈 NEW
+
+  @Column({ nullable: true })
+  tfaSecret: string;
   @Column({ enum: Role, default: Role.Regular })
   role: Role;
   @Column({ enum: Permission, default: [], type: 'json' })
